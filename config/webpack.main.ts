@@ -7,6 +7,10 @@ const config: Configuration = {
     main: paths.mainEntry
   },
   externals: [nodeExternals()],
+  resolve: {
+    extensions: [".tsx", ".ts", ".jsx", ".js"]
+  },
+  target: "electron-main",
   mode: "development",
   module: {
     rules: [

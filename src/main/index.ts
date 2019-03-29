@@ -1,4 +1,5 @@
 import electron from "electron";
+import { setupEvents } from "./events";
 
 const app = electron.app;
 
@@ -21,6 +22,7 @@ function createMainWindow() {
   });
 
   if (process.env.NODE_ENV === "development") {
+    win.loadURL(`http://localhost:4723`);
     console.log("Is in dev mode.");
   } else {
     win.loadURL(`file://${process.cwd()}/public/index.html`);
@@ -46,3 +48,5 @@ app.on("activate", () => {
 app.on("ready", () => {
   mainWindow = createMainWindow();
 });
+
+setupEvents();
