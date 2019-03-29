@@ -1,31 +1,71 @@
 import { ipcMain } from "electron";
+import { store } from "./store";
 
-const setWorkDirectory = {
-  action: "setWorkDirectory",
-  success: "setWorkDirectorySuccess",
-  error: "setWorkDirectoryError"
+const getGameDirectory = {
+  action: "getGameDirectory",
+  success: "getGameDirectorySuccess",
+  error: "getGameDirectoryError"
 };
 
-const setSaveGameDirectory = {
-  action: "setSaveGameDirectory",
-  success: "setSaveGameDirectorySuccess",
-  error: "setSaveGameDirectoryError"
+const getSaveDirectory = {
+  action: "getSaveDirectory",
+  success: "getSaveDirectorySuccess",
+  error: "getSaveDirectoryError"
+};
+
+const setGameDirectory = {
+  action: "setGameDirectory",
+  success: "setGameDirectorySuccess",
+  error: "setGameDirectoryError"
+};
+
+const setSaveDirectory = {
+  action: "setSaveDirectory",
+  success: "setSaveDirectorySuccess",
+  error: "setSaveDirectoryError"
 };
 
 export const actions = {
-  setWorkDirectory,
-  setSaveGameDirectory
+  getGameDirectory,
+  getSaveDirectory,
+  setGameDirectory,
+  setSaveDirectory
 };
 
 export function setupEvents() {
-  ipcMain.on(setWorkDirectory.action, (event: any, workdirPath: string) => {
-    event.sender.send(setWorkDirectory.success);
+  ipcMain.on(setGameDirectory.action, (event: any, gameDirPath: string) => {
+    try {
+      store.set("gameDirectory", gameDirPath);
+      event.sender.send(setGameDirectory.success, gameDirPath);
+    } catch (err) {
+      event.sender.send(setGameDirectory.error);
+    }
   });
 
-  ipcMain.on(
-    setSaveGameDirectory.action,
-    (event: any, savegameDirPath: string) => {
-      event.sender.send(setSaveGameDirectory.success);
+  ipcMain.on(setSaveDirectory.action, (event: any, saveDirPath: string) => {
+    try {
+      store.set("saveDirectory", saveDirPath);
+      event.sender.send(setSaveDirectory.success, saveDirPath);
+    } catch (err) {
+      event.sender.send(setSaveDirectory.error);
     }
-  );
+  });
+
+  ipcMain.on(getGameDirectory.action, (event: any) => {
+    try {
+      const data = store.get("gameDirectory");
+      event.sender.send(getGameDirectory.success, data);
+    } catch (err) {
+      event.sender.send(getGameDirectory.error);
+    }
+  });
+
+  ipcMain.on(getSaveDirectory.action, (event: any) => {
+    try {
+      const data = store.get("saveDirectory");
+      event.sender.send(getSaveDirectory.success, data);
+    } catch (err) {
+      event.sender.send(getSaveDirectory.error);
+    }
+  });
 }

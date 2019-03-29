@@ -28,6 +28,7 @@ function createMainWindow() {
     win.loadURL(`file://${process.cwd()}/public/index.html`);
   }
 
+  win.maximize();
   win.on("closed", onClosed);
 
   return win;
