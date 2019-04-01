@@ -1,17 +1,21 @@
-import React, { Fragment } from "react";
+import styled from "styled-components";
+import React from "react";
 import { PathContainer } from "../components/path-container";
 import { Path } from "../components/path";
 import { Button } from "../components/button";
 import { ipcRenderer, remote } from "electron";
 import { actions } from "../../main/events";
-import { withRouter, RouteComponentProps } from "react-router";
+
+export const SettingsPageContainer = styled.div`
+  padding: 18px;
+`;
 
 export type SettingsState = {
   gameDirectory: string | null;
   saveDirectory: string | null;
 };
 
-export type SettingsComponentProps = RouteComponentProps<{}>;
+export type SettingsComponentProps = {};
 
 class SettingsComponent extends React.Component<
   SettingsComponentProps,
@@ -33,8 +37,7 @@ class SettingsComponent extends React.Component<
   public render() {
     const { saveDirectory, gameDirectory } = this.state;
     return (
-      <Fragment>
-        <Button onClick={this.goHome}>Back</Button>
+      <SettingsPageContainer>
         <PathContainer
           title="Sekiro folder"
           subtitle="Path to Sekiro appdata folder."
@@ -49,13 +52,9 @@ class SettingsComponent extends React.Component<
           <Path placeholder="Not set." path={saveDirectory} />
           <Button onClick={this.browseForSaveFolder}>Browse</Button>
         </PathContainer>
-      </Fragment>
+      </SettingsPageContainer>
     );
   }
-
-  private goHome = () => {
-    this.props.history.push("/");
-  };
 
   private bindEvents = () => {
     ipcRenderer.on(
@@ -131,4 +130,4 @@ class SettingsComponent extends React.Component<
   };
 }
 
-export const Settings = withRouter(SettingsComponent);
+export const Settings = SettingsComponent;

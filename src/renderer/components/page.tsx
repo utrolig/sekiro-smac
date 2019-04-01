@@ -6,5 +6,17 @@ export const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 18px;
+`;
+
+export const InnerContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`;
+
+export const PageContent = styled.div`
+  background-color: rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex: 1;
+  flex-direction: column;
 `;

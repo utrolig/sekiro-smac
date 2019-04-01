@@ -1,5 +1,14 @@
 import { ipcMain } from "electron";
 import { store } from "./store";
+import fs from "fs";
+import path from "path";
+import { ActiveSave } from "../common";
+
+const getActiveSavegame = {
+  action: "getActiveSavegame",
+  success: "getActiveSavegameSuccess",
+  error: "getActiveSavegameError"
+};
 
 const getGameDirectory = {
   action: "getGameDirectory",
@@ -26,6 +35,7 @@ const setSaveDirectory = {
 };
 
 export const actions = {
+  getActiveSavegame,
   getGameDirectory,
   getSaveDirectory,
   setGameDirectory,
@@ -33,6 +43,24 @@ export const actions = {
 };
 
 export function setupEvents() {
+  ipcMain.on(getActiveSavegame.action, (event: any) => {
+    try {
+      const gameDirectory = store.get("gameDirectory");
+      const [fileName] = fs.readdirSync(gameDirectory);
+      const saveFilePath = path.resolve(gameDirectory, fileName);
+      const saveFile = fs.statSync(saveFilePath);
+      const dto: ActiveSave = {
+        modifiedAt: saveFile.mtime,
+        name: fileName
+      };
+
+      event.sender.send(getActiveSavegame.success, dto);
+    } catch (err) {
+      console.log(err);
+      event.sender.send(getActiveSavegame.error, err);
+    }
+  });
+
   ipcMain.on(setGameDirectory.action, (event: any, gameDirPath: string) => {
     try {
       store.set("gameDirectory", gameDirPath);
