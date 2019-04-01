@@ -12,6 +12,7 @@ export const InnerContent = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
+  padding-top: 12px;
 `;
 
 export const PageContent = styled.div`

@@ -1,10 +1,11 @@
 import electron from "electron";
 import { setupEvents } from "./events";
+import url from "url";
+import path from "path";
 
 const app = electron.app;
 
 // Adds debug features like hotkeys for triggering dev tools and reload
-require("electron-debug")();
 
 // Prevent window being garbage collected
 let mainWindow: electron.BrowserWindow | null;
@@ -17,18 +18,22 @@ function onClosed() {
 
 function createMainWindow() {
   const win = new electron.BrowserWindow({
-    width: 600,
-    height: 400
+    width: 800,
+    height: 600
+    // frame: false,
+    // titleBarStyle: "hiddenInset"
   });
+  win.setMenu(null);
+  win.setTitle("Sekiro Savegame Manager");
+  win.on("page-title-updated", ev => ev.preventDefault());
 
   if (process.env.NODE_ENV === "development") {
     win.loadURL(`http://localhost:4723`);
-    console.log("Is in dev mode.");
+    require("electron-debug")();
   } else {
-    win.loadURL(`file://${process.cwd()}/public/index.html`);
+    win.loadURL(`file://${path.join(__dirname, "index.html")}`);
   }
 
-  win.maximize();
   win.on("closed", onClosed);
 
   return win;

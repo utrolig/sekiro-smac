@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { GlobalStyles } from "./components/global-styles";
 import { PageContainer, InnerContent, PageContent } from "./components/page";
 import sekiroLogo from "./assets/sekiro-logo.png";
-import { AppLogo, AppLogoContainer, AppLogoTitle } from "./components/app-logo";
+import { AppLogo, AppLogoContainer } from "./components/app-logo";
 import { Settings } from "./pages";
 import { createMemoryHistory } from "history";
 import { Router, Switch, Route, Redirect } from "react-router";
@@ -19,7 +19,6 @@ export class Root extends React.Component {
         <PageContainer>
           <AppLogoContainer>
             <AppLogo src={sekiroLogo} />
-            <AppLogoTitle>Savegame Manager</AppLogoTitle>
           </AppLogoContainer>
           <Router history={history}>
             <InnerContent>

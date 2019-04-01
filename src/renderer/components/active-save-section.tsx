@@ -3,6 +3,8 @@ import styled from "styled-components";
 import moment from "moment";
 import { ActiveSave } from "../../common";
 import { Button } from "./button";
+import { SectionTitle } from "./section-title";
+import { Input } from "./input";
 
 export const Container = styled.div`
   display: flex;
@@ -11,27 +13,33 @@ export const Container = styled.div`
   width: 300px;
 `;
 
-const TitleComponent = styled.div`
-  color: #fff;
-  font-size: 12px;
-  font-weight: bold;
-  margin-bottom: 6px;
-  text-transform: uppercase;
-`;
-
-const Title = () => <TitleComponent>Active Savegame</TitleComponent>;
+const Title = () => <SectionTitle>Active savegame</SectionTitle>;
 
 export type ActiveSaveSectionProps = {
   error: boolean;
+  disabled: boolean;
   item: ActiveSave | null;
+  inputError: boolean;
   loading: boolean;
+  savegameNameInput: string;
+  onSavegameNameChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBackupActiveSavegame: () => void;
 };
 
 class ActiveSaveSectionComponent extends React.Component<
   ActiveSaveSectionProps
 > {
   public render() {
-    const { error, item, loading } = this.props;
+    const {
+      disabled,
+      inputError,
+      error,
+      item,
+      loading,
+      onBackupActiveSavegame,
+      savegameNameInput,
+      onSavegameNameChange
+    } = this.props;
 
     if (loading) {
       return <Container />;
@@ -51,11 +59,34 @@ class ActiveSaveSectionComponent extends React.Component<
       <Container>
         <Title />
         <div>{item.name}</div>
-        <div>{moment(item.modifiedAt).fromNow()}</div>
-        <Button style={{ marginTop: 18 }}>Backup current save</Button>
+        <div style={{ marginBottom: 18 }}>
+          {moment(item.modifiedAt).fromNow()}
+        </div>
+        <Input
+          error={inputError}
+          placeholder={"f.ex Before Chained Ogre"}
+          label={"Name"}
+          description={this.getInputDescription()}
+          value={savegameNameInput}
+          onChange={onSavegameNameChange}
+        />
+        <Button
+          disabled={inputError || disabled}
+          onClick={onBackupActiveSavegame}
+        >
+          Backup current save
+        </Button>
       </Container>
     );
   }
+
+  private getInputDescription = () => {
+    if (this.props.inputError) {
+      return "A savegame with that name already exists.";
+    }
+
+    return "A fitting name for the current save backup";
+  };
 }
 
 export const ActiveSaveSection = ActiveSaveSectionComponent;

@@ -5,5 +5,9 @@ export type ActiveSave = {
 
 export type SavegameInfo = {
   name: string;
-  modifiedAt: Date;
+  created: Date;
+};
+
+export type BackupActiveSavegameData = {
+  name: string;
 };

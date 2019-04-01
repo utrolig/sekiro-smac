@@ -6,6 +6,10 @@ const config: Configuration = {
   entry: {
     main: paths.mainEntry
   },
+  output: {
+    filename: "main.js",
+    path: paths.dist
+  },
   externals: [nodeExternals()],
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js"]
@@ -25,6 +29,10 @@ const config: Configuration = {
         }
       }
     ]
+  },
+  node: {
+    __dirname: false,
+    __filename: false
   }
 };
 

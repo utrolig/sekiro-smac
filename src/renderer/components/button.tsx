@@ -19,4 +19,10 @@ export const Button = styled.button`
   &:active {
     box-shadow: 0 0 0 2px inset #7289da;
   }
+
+  &:disabled {
+    background-color: #e0e0e0;
+    cursor: not-allowed;
+    color: rgba(0, 0, 0, 0.33);
+  }
 `;

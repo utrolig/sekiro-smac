@@ -11,6 +11,10 @@ type ConfigurationWithDevServer = Configuration & {
 };
 
 const config: ConfigurationWithDevServer = {
+  output: {
+    filename: "renderer.js",
+    path: paths.dist
+  },
   devServer: {
     contentBase: paths.dist,
     port: 4723

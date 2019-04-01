@@ -12,6 +12,9 @@ const Container = styled.div`
   padding: 0 12px;
   margin-right: 12px;
   font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export type PathProps = {
