@@ -10,3 +10,5 @@ Sekiro Savegame Manager
 
 1. `yarn` to install dependencies.
 2. `yarn dist` to build the portable executable.
+
+# This is a change to the readme file
